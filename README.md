@@ -4,7 +4,8 @@ A remote patient monitoring system that continuously tracks vital signs, detects
 
 ## Project
 
-- **Problem statement:** #16 — Remote Patient Vitals Alert &amp; Monitoring App
+- **Problem statement:** #16 - Remote Patient Vitals Alert & Monitoring App
+- **Student SRN:** PES1UG24CS444
 - **Course:** Software Engineering
 - **Repository:** `MyProject_PVM`
 
@@ -34,6 +35,18 @@ The Kanban and Scrum reports document the Jira project-management activities. Th
 - [Kanban Report](3_Project_Creation/Kanban.pdf)
 - [Scrum Report](3_Project_Creation/Scrum.pdf)
 - [Bug Tracking Report](6_Software_Testing/BugReport.pdf)
+
+## Lab 3 - Component Modelling & Architectural Pattern Selection
+
+The Lab 3 deliverables define the proposed software architecture for the
+Remote Patient Vitals Alert & Monitoring App. Microservices Architecture was
+selected based on the system's telemetry, alert escalation, availability,
+performance, and security requirements.
+
+- [Component Diagram](2_Architectural_Diagram/Component_Diagram.png)
+- [Architecture Justification](2_Architectural_Diagram/Architecture_Justification.pdf)
+- [Lab 3 Deliverables](2_Architectural_Diagram/)
+
 ## Setup
 
 Project setup and execution instructions will be added when the application implementation is defined.

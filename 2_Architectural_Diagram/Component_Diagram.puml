@@ -1,0 +1,118 @@
+@startuml
+title
+  <b>Remote Patient Vitals Alert & Monitoring App (PVM)</b>
+  Problem Statement #16
+end title
+
+skinparam componentStyle uml2
+skinparam shadowing false
+skinparam roundcorner 5
+skinparam defaultFontName "Segoe UI", Arial, sans-serif
+
+skinparam package {
+  BackgroundColor #F8FAFC
+  BorderColor #475569
+  FontColor #0F172A
+  FontStyle bold
+}
+
+skinparam component {
+  BackgroundColor #FFFFFF
+  BorderColor #1E40AF
+  FontColor #0F172A
+  BorderThickness 1.5
+}
+
+skinparam interface {
+  BackgroundColor #FFFFFF
+  BorderColor #333333
+}
+
+skinparam ArrowColor #334155
+skinparam ArrowFontColor #1E293B
+
+' =========================================================
+' TOP: Clients & External Systems
+' =========================================================
+package "Clients & External Systems" {
+  actor "Remote Patient\n(Wearable / Bedside IoT)" as Patient
+  actor "On-Call Caregiver\n(Mobile / Web App)" as Caregiver
+  actor "System Administrator\n(Clinical Operations)" as Admin
+  component "Emergency Dispatch Service\n<<external system>>\n(EMS / 911 Dispatch)" as ExtEMS
+
+  Patient -[hidden]r- Caregiver
+  Caregiver -[hidden]r- Admin
+  Admin -[hidden]r- ExtEMS
+}
+
+' =========================================================
+' MIDDLE: PVM Microservices Architecture
+' =========================================================
+package "PVM Microservices Architecture" {
+
+  ' Row 1: Main Pipeline Components (Left to Right)
+  component "Telemetry Ingestion Service\n<<component>>\n--\nUC-01 | FR-001 | NFR-001" as Telemetry
+  component "Vitals Monitoring & Detection Service\n<<component>>\n--\nUC-02 | FR-001" as Monitoring
+  component "Alert Generation & Escalation Service\n<<component>>\n--\nUC-03, UC-04, UC-05\nFR-002, FR-003" as Alert
+  component "Caregiver Dashboard Service\n<<component>>\n--\nUC-08 | FR-003" as Dashboard
+
+  ' Row 2: Secondary / Supporting Services
+  component "Clinical Threshold Management Service\n<<component>>\n--\nUC-07 | FR-004" as Threshold
+  component "Emergency Dispatch Integration Service\n<<component>>\n--\nUC-06 | FR-005" as DispatchSvc
+
+  ' Enforce strict horizontal and vertical grid
+  Telemetry -[hidden]r- Monitoring
+  Monitoring -[hidden]r- Alert
+  Alert -[hidden]r- Dashboard
+
+  Monitoring -[hidden]d- Threshold
+  Alert -[hidden]d- DispatchSvc
+  Threshold -[hidden]r- DispatchSvc
+
+  ' Row 1 Assembly Connectors (Ball & Socket)
+  Telemetry -right-() "Vital Stream\n(WebSocket)"
+  "Vital Stream\n(WebSocket)" )-right- Monitoring
+
+  Monitoring -right-() "Anomaly Bus\n(Pub/Sub)"
+  "Anomaly Bus\n(Pub/Sub)" )-right- Alert
+
+  Alert -right-() "Alert & Ack API\n(HTTPS / SSE)"
+  "Alert & Ack API\n(HTTPS / SSE)" )-right- Dashboard
+
+  ' Row 2 Vertical Assembly Connectors (Ball & Socket)
+  Threshold -up-() "Threshold Query API\n(gRPC)"
+  "Threshold Query API\n(gRPC)" )-up- Monitoring
+
+  DispatchSvc -up-() "Emergency Dispatch Request API\n(REST / JSON)"
+  "Emergency Dispatch Request API\n(REST / JSON)" )-up- Alert
+}
+
+' =========================================================
+' BOTTOM: Data Layer
+' =========================================================
+package "Data Layer" {
+  database "Patient & Alert Data Store\n<<component>>\n--\nStores: Patient information • Vital readings • Clinical thresholds • Alert history • Caregiver acknowledgement records\nNFR-002 (AES-256 / HIPAA)" as DataStore
+  interface "Data Persistence API\n(TLS 1.2+ / mTLS)" as IData
+}
+
+' External Interfaces (Lollipops for external callers)
+Telemetry -up-() "Vital Ingestion API\n(MQTT / TLS)"
+Patient --> "Vital Ingestion API\n(MQTT / TLS)"
+
+Dashboard -up-() "Dashboard API\n(HTTPS / SSE)"
+Caregiver --> "Dashboard API\n(HTTPS / SSE)"
+
+Threshold -right-() "Threshold Config API\n(REST / HTTPS)"
+Admin -down-> "Threshold Config API\n(REST / HTTPS)"
+
+ExtEMS -down-() "EMS Webhook API\n(mTLS / Webhook)"
+"EMS Webhook API\n(mTLS / Webhook)" )-down- DispatchSvc
+
+' Data Persistence Connectors
+DataStore -up-() IData
+Telemetry ..> IData : "persist vitals"
+Monitoring ..> IData : "breaches"
+Alert ..> IData : "acks & history"
+Threshold ..> IData : "thresholds"
+
+@enduml
