@@ -19,7 +19,7 @@ A remote patient monitoring system that continuously tracks vital signs, detects
 | [`3_Project_Creation/`](3_Project_Creation/)           | GitHub/Jira project-creation evidence, plus the completed [Kanban](3_Project_Creation/Kanban.pdf) and [Scrum](3_Project_Creation/Scrum.pdf) deliverables |
 | [`4_SRS_WBS/`](4_SRS_WBS/)                             | Software Requirements Specification and Work Breakdown Structure                                                                                         |
 | [`5_GitHub_Copilot/`](5_GitHub_Copilot/)               | Evidence of GitHub Copilot usage and relevant repository links                                                                                           |
-| [`6_Software_Testing/`](6_Software_Testing/)           | [Bug-tracking report](6_Software_Testing/BugReport.pdf), testing activity, bug fixes/patches, retesting evidence, and required repository link           |
+| [`6_Software_Testing/`](6_Software_Testing/)           | [Bug-tracking report](6_Software_Testing/BugReport.pdf), testing activity, bug fixes/patches, retesting evidence, and [Lab 4 Hangman Repository link](https://github.com/KadakWNL/16_hangman) |
 
 
 ## Lab 1 - Requirements Engineering & UML Use-Case Modelling
@@ -46,6 +46,13 @@ performance, and security requirements.
 - [Component Diagram](2_Architectural_Diagram/Component_Diagram.png)
 - [Architecture Justification](2_Architectural_Diagram/Architecture_Justification.pdf)
 - [Lab 3 Deliverables](2_Architectural_Diagram/)
+
+## Lab 4 - Vibe Coding & Software Testing Fixes
+
+The Lab 4 deliverables focus on Vibe Coding and AI-assisted defect resolution and feature development using LLM tools (Antigravity CLI / Gemini). The assignment was completed on the assigned game application repository (Scenario 16 - Hangman Challenge) as prescribed under folder `6_Software_Testing/`.
+
+- [Assigned Hangman Repository (KadakWNL/16_hangman)](https://github.com/KadakWNL/16_hangman)
+- [Software Testing Deliverables](6_Software_Testing/)
 
 ## Setup
 
